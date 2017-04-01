@@ -59,7 +59,7 @@
     margin: 0px auto;
     width: 640px;
     height: 480px;
-    border: 10px #aaa solid;
+    
 }
 #webCam {
     width: 640px;
@@ -102,6 +102,8 @@ function myFunction() {
 function alertFunc() {
 snapImage();
 console.log("snap");
+/*global socket*/
+socket.emit("get_image", null);
 }
 
 myFunction();

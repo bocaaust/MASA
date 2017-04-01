@@ -121,7 +121,9 @@ sql.on('error', err => {
 //   });
 // }
 
-
+function validateUser(data){
+ 
+}
 
  
 io.on('connection', function (socket) {
@@ -135,9 +137,15 @@ io.on('connection', function (socket) {
     socket.image="";
     sockets.push(socket);
     
+    socket.on('get_image', function (data) {
+
+            socket.emit('image_server',stored);
+
+    });
+    
     socket.on('server_image', function (data) {
 
-      socket.emit('image_server',stored);
+            //socket.emit('image_server',stored);
             stored=data;
       
     });
@@ -145,6 +153,26 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
       sockets.splice(sockets.indexOf(socket), 1);
       updateRoster();
+    });
+    
+    socket.on('User_Login', function(data){
+        console.log("------------------------------------------------------jksfdfdfddsfafdfddfsafdsjfds");
+        var usernameCheck = data.username;
+        var passwordCheck = data.password;
+        console.log("usernmae shitttt" + data.username + data.password);
+        console.log("usersssssssss" + JSON.stringify(users[0]));
+          for(var i =0; i < users[0].length; i++){
+            console.log("username-------------" + users[0][i].username)
+            if(users[0][i].username == usernameCheck){
+              console.log("valid username now checking password");
+              if(users[0][i].password == passwordCheck){
+                console.log("good password log in user")
+                socket.emit('Validated', { user: users[0][i], cams: cameras });
+                break;
+              }
+            }
+          }
+          
     });
 
     socket.on('message', function (msg) {
